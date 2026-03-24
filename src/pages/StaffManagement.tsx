@@ -159,31 +159,31 @@ export default function StaffManagement() {
           <motion.div
             layout
             key={s.id}
-            className="glass-card p-6 rounded-[32px] card-3d group relative overflow-hidden"
+            className="glass-card p-6 rounded-[32px] card-hover-effect group relative overflow-hidden"
           >
-            <div className="absolute top-0 right-0 w-24 h-24 bg-purple-600/5 blur-2xl rounded-full -mr-8 -mt-8 group-hover:bg-purple-600/10 transition-colors" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-600/5 blur-3xl rounded-full -mr-12 -mt-12 group-hover:bg-purple-600/10 transition-colors" />
             <div className="flex items-start justify-between mb-6">
-              <div className="w-14 h-14 glass-card rounded-2xl flex items-center justify-center text-purple-500 font-bold text-2xl purple-glow">
+              <div className="w-14 h-14 gradient-bg rounded-2xl flex items-center justify-center text-white font-black text-2xl purple-glow group-hover:scale-110 transition-transform duration-500">
                 {s.name[0]}
               </div>
               <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
                 <button
                   onClick={() => handleViewProfile(s)}
-                  className="p-2 text-slate-400 hover:text-purple-500 hover:bg-white/5 rounded-xl transition-colors"
+                  className="p-2.5 glass-card text-slate-400 hover:text-purple-500 hover:bg-purple-500/10 rounded-xl transition-all"
                   title="View Profile"
                 >
                   <Eye className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => handleEdit(s)}
-                  className="p-2 text-slate-400 hover:text-purple-500 hover:bg-white/5 rounded-xl transition-colors"
+                  className="p-2.5 glass-card text-slate-400 hover:text-purple-500 hover:bg-purple-500/10 rounded-xl transition-all"
                   title="Edit"
                 >
                   <Edit2 className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => handleDelete(s.id)}
-                  className="p-2 text-slate-400 hover:text-red-500 hover:bg-white/5 rounded-xl transition-colors"
+                  className="p-2.5 glass-card text-slate-400 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all"
                   title="Delete"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -192,23 +192,23 @@ export default function StaffManagement() {
             </div>
             <div className="space-y-1">
               <div className="flex items-center gap-3 flex-wrap">
-                <h3 className="text-xl font-bold text-slate-900 dark:text-white">{s.name}</h3>
+                <h3 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">{s.name}</h3>
                 <button 
                   onClick={() => handleViewProfile(s)}
-                  className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-500 border border-purple-500/20 hover:bg-purple-500/20 transition-all"
+                  className="text-[9px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full bg-purple-500/10 text-purple-500 border border-purple-500/20 hover:bg-purple-500/20 transition-all"
                 >
                   View Profile
                 </button>
               </div>
-              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium opacity-60">{s.role}</p>
-              <div className="mt-6 flex items-center justify-between p-4 bg-white/5 rounded-2xl">
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest opacity-50">{s.role}</p>
+              <div className="mt-6 flex items-center justify-between p-5 bg-white/5 rounded-2xl border border-white/5 group-hover:border-purple-500/10 transition-colors">
                 <div>
-                  <p className="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Monthly Salary</p>
-                  <p className="text-lg font-bold text-slate-900 dark:text-white">₹{s.monthlySalary.toLocaleString()}</p>
+                  <p className="text-[10px] text-slate-500 uppercase font-black tracking-[0.2em]">Monthly Salary</p>
+                  <p className="text-xl font-black text-slate-900 dark:text-white tracking-tight">₹{s.monthlySalary.toLocaleString()}</p>
                 </div>
                 <span className={cn(
-                  "px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider",
-                  s.active ? "bg-emerald-500/10 text-emerald-500" : "bg-white/5 text-slate-500"
+                  "px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border",
+                  s.active ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" : "bg-white/5 text-slate-500 border-white/10"
                 )}>
                   {s.active ? 'Active' : 'Inactive'}
                 </span>

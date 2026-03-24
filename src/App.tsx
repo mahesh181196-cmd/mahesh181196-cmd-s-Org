@@ -40,26 +40,9 @@ interface DemoUser {
 
 type AppUser = DemoUser;
 
-function Layout({ children, user, onLogout }: { children: ReactNode; user: AppUser; onLogout: () => void }) {
+function Layout({ children, user, onLogout, isDarkMode, setIsDarkMode }: { children: ReactNode; user: AppUser; onLogout: () => void; isDarkMode: boolean; setIsDarkMode: (val: boolean) => void }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('theme') === 'dark' || 
-        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    }
-    return false;
-  });
   const location = useLocation();
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [isDarkMode]);
 
   const navItems = [
     { name: 'Dashboard', path: '/', icon: LayoutDashboard },
@@ -79,7 +62,7 @@ function Layout({ children, user, onLogout }: { children: ReactNode; user: AppUs
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0a0a0f] flex flex-col lg:flex-row transition-colors duration-500 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-100 dark:bg-[#0a0a0f] flex flex-col lg:flex-row transition-colors duration-500 relative overflow-hidden">
       <div className="atmosphere" />
       <Toaster position="top-center" richColors />
       
@@ -98,8 +81,8 @@ function Layout({ children, user, onLogout }: { children: ReactNode; user: AppUs
 
       {/* Sidebar (Desktop) */}
       <aside className={cn(
-        "fixed inset-y-0 left-0 z-50 w-64 glass-card border border-white/5 transform transition-transform duration-500 lg:translate-x-0 lg:static lg:inset-0 m-4 rounded-[32px] shadow-[0_8px_32px_rgba(0,0,0,0.3)]",
-        isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        "fixed inset-y-0 left-0 z-50 w-64 glass-card transform transition-transform duration-500 lg:translate-x-0 lg:static lg:inset-0 m-4 rounded-[32px] shadow-[0_8px_32px_rgba(0,0,0,0.3)]",
+        isSidebarOpen ? "translate-x-0" : "-translate-x-[150%]"
       )}>
         <div className="h-full flex flex-col">
           <div className="p-8 border-b border-white/5 flex items-center justify-between">
@@ -269,7 +252,7 @@ function Login({ onDemoLogin }: { onDemoLogin: (user: DemoUser) => void }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-100 dark:bg-[#0a0a0f] flex items-center justify-center p-4 relative overflow-hidden transition-colors duration-500">
       <div className="atmosphere" />
       <motion.div 
         initial={{ opacity: 0, scale: 0.9 }}
@@ -280,34 +263,34 @@ function Login({ onDemoLogin }: { onDemoLogin: (user: DemoUser) => void }) {
           <div className="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center text-white text-3xl font-bold mx-auto mb-4 purple-glow">
             S
           </div>
-          <h1 className="text-2xl font-bold text-white">Stone Edge Manager</h1>
-          <p className="text-slate-400 mt-2">Sign in to manage your business</p>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Stone Edge Manager</h1>
+          <p className="text-slate-500 dark:text-slate-400 mt-2">Sign in to manage your business</p>
         </div>
 
         <form onSubmit={handleDemoLogin} className="space-y-4">
           <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">Username</label>
+            <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Username</label>
             <div className="relative">
               <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500/20 text-white"
+                className="w-full pl-12 pr-4 py-3 bg-white/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500/20 text-slate-900 dark:text-white"
                 placeholder="Enter username"
                 required
               />
             </div>
           </div>
           <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">Password</label>
+            <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Password</label>
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500/20 text-white"
+                className="w-full pl-12 pr-4 py-3 bg-white/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500/20 text-slate-900 dark:text-white"
                 placeholder="Enter password"
                 required
               />
@@ -332,6 +315,24 @@ function Login({ onDemoLogin }: { onDemoLogin: (user: DemoUser) => void }) {
 export default function App() {
   const [user, setUser] = useState<AppUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('theme');
+      if (saved) return saved === 'dark';
+      return true; // Default to dark mode
+    }
+    return true;
+  });
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
 
   useEffect(() => {
     // Check for demo user in session storage
@@ -380,7 +381,7 @@ export default function App() {
 
   return (
     <Router>
-      <Layout user={user} onLogout={handleLogout}>
+      <Layout user={user} onLogout={handleLogout} isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode}>
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/staff" element={<StaffManagement />} />

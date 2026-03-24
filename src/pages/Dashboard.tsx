@@ -10,7 +10,8 @@ import {
   Package,
   ArrowUpRight,
   Clock,
-  CalendarCheck
+  CalendarCheck,
+  ShoppingCart
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { cn } from '../lib/utils';
@@ -124,24 +125,26 @@ export default function Dashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="glass-card p-5 sm:p-6 rounded-[24px] sm:rounded-[32px] card-3d group relative overflow-hidden"
+            className="glass-card p-5 sm:p-6 rounded-[32px] card-hover-effect group relative overflow-hidden"
           >
-            <div className="absolute top-0 right-0 w-24 h-24 bg-purple-600/5 blur-2xl rounded-full -mr-8 -mt-8 group-hover:bg-purple-600/10 transition-colors" />
-            <div className="flex items-start justify-between mb-4">
-              <div className={cn("p-2.5 sm:p-3 rounded-xl sm:rounded-2xl text-white purple-glow", stat.color.replace('indigo', 'purple').replace('emerald', 'purple').replace('amber', 'purple').replace('blue', 'purple'))}>
-                <stat.icon className="w-5 h-5 sm:w-6 sm:h-6" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-600/5 blur-3xl rounded-full -mr-12 -mt-12 group-hover:bg-purple-600/10 transition-colors" />
+            <div className="flex items-start justify-between mb-6">
+              <div className="p-3 rounded-2xl bg-gradient-to-br from-purple-600 to-purple-500 text-white purple-glow group-hover:scale-110 transition-transform duration-500">
+                <stat.icon className="w-6 h-6" />
               </div>
-              <div className="p-1.5 sm:p-2 bg-white/5 rounded-lg sm:rounded-xl">
-                <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400 group-hover:text-purple-500 transition-colors" />
+              <div className="p-2 bg-white/5 rounded-xl border border-white/5 group-hover:border-purple-500/20 transition-colors">
+                <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-purple-500 transition-colors" />
               </div>
             </div>
             <div>
-              <p className="text-[10px] sm:text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{stat.label}</p>
-              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mt-1">{stat.value}</h3>
-              <p className="text-[10px] sm:text-xs text-slate-400 dark:text-slate-500 mt-2 flex items-center gap-1 font-bold">
-                <Clock className="w-3 h-3" />
-                {stat.trend}
-              </p>
+              <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.15em]">{stat.label}</p>
+              <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mt-1 tracking-tight">{stat.value}</h3>
+              <div className="mt-4 flex items-center gap-2">
+                <div className="flex items-center gap-1 px-2 py-1 rounded-lg bg-purple-500/10 border border-purple-500/20">
+                  <Clock className="w-3 h-3 text-purple-500" />
+                  <span className="text-[10px] sm:text-xs text-purple-500 font-bold">{stat.trend}</span>
+                </div>
+              </div>
             </div>
           </motion.div>
         ))}
@@ -149,28 +152,31 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
         {/* Recent Sales */}
-        <div className="glass-card rounded-[24px] sm:rounded-[32px] overflow-hidden card-3d">
-          <div className="p-5 sm:p-6 border-b border-white/5 flex items-center justify-between">
-            <h3 className="font-bold text-slate-900 dark:text-white text-base sm:text-lg">Recent Sales</h3>
-            <Link to="/sales" className="text-xs sm:text-sm text-purple-600 dark:text-purple-400 font-bold hover:underline">View all</Link>
+        <div className="glass-card rounded-[32px] overflow-hidden card-hover-effect">
+          <div className="p-6 sm:p-8 border-b border-white/5 flex items-center justify-between bg-white/5">
+            <div>
+              <h3 className="font-black text-slate-900 dark:text-white text-lg tracking-tight">Recent Sales</h3>
+              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">Latest transactions</p>
+            </div>
+            <Link to="/sales" className="px-4 py-2 glass-card rounded-xl text-xs text-purple-500 font-bold hover:bg-purple-500/10 transition-all">View all</Link>
           </div>
           <div className="divide-y divide-white/5">
             {sales.slice(0, 5).sort((a, b) => b.date.localeCompare(a.date)).map((sale) => (
-              <div key={sale.id} className="p-4 sm:p-5 flex items-center justify-between hover:bg-white/5 transition-colors">
-                <div className="flex items-center gap-3 sm:gap-4 min-w-0">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 glass-card rounded-xl sm:rounded-2xl flex items-center justify-center text-purple-500 font-bold text-lg sm:text-xl shrink-0">
+              <div key={sale.id} className="p-5 flex items-center justify-between hover:bg-white/5 transition-all group">
+                <div className="flex items-center gap-4 min-w-0">
+                  <div className="w-12 h-12 glass-card rounded-2xl flex items-center justify-center text-purple-500 font-bold text-xl shrink-0 group-hover:scale-110 transition-transform">
                     {sale.customerName[0]}
                   </div>
                   <div className="min-w-0">
                     <p className="text-sm font-bold text-slate-900 dark:text-white truncate">{sale.customerName}</p>
-                    <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium opacity-60 truncate">{sale.product} • {sale.quantity} units</p>
+                    <p className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest opacity-50 truncate">{sale.product} • {sale.quantity} units</p>
                   </div>
                 </div>
                 <div className="text-right shrink-0">
-                  <p className="text-sm font-bold text-slate-900 dark:text-white">₹{sale.amount.toLocaleString()}</p>
+                  <p className="text-base font-black text-slate-900 dark:text-white tracking-tight">₹{sale.amount.toLocaleString()}</p>
                   <span className={cn(
-                    "text-[9px] sm:text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 sm:py-1 rounded-lg",
-                    sale.paymentStatus === 'paid' ? "bg-emerald-500/10 text-emerald-500" : "bg-amber-500/10 text-amber-500"
+                    "text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-lg mt-1 inline-block",
+                    sale.paymentStatus === 'paid' ? "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20" : "bg-amber-500/10 text-amber-500 border border-amber-500/20"
                   )}>
                     {sale.paymentStatus}
                   </span>
@@ -178,69 +184,76 @@ export default function Dashboard() {
               </div>
             ))}
             {sales.length === 0 && (
-              <div className="p-12 text-center text-slate-400 dark:text-slate-500 font-medium">
-                No sales recorded yet.
+              <div className="p-16 text-center">
+                <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <ShoppingCart className="w-8 h-8 text-slate-600" />
+                </div>
+                <p className="text-sm text-slate-500 font-medium">No sales recorded yet.</p>
               </div>
             )}
           </div>
         </div>
 
         {/* Staff Summary */}
-        <div className="glass-card rounded-[24px] sm:rounded-[32px] overflow-hidden card-3d p-5 sm:p-8">
-          <div className="flex items-center justify-between mb-6 sm:mb-8">
-            <h3 className="font-bold text-slate-900 dark:text-white text-base sm:text-lg">Staff Status</h3>
-            <Link to="/staff" className="text-xs sm:text-sm text-purple-600 dark:text-purple-400 font-bold hover:underline">Manage</Link>
+        <div className="glass-card rounded-[32px] overflow-hidden card-hover-effect p-6 sm:p-10">
+          <div className="flex items-center justify-between mb-10">
+            <div>
+              <h3 className="font-black text-slate-900 dark:text-white text-lg tracking-tight">Staff Status</h3>
+              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">Real-time attendance</p>
+            </div>
+            <Link to="/staff" className="px-4 py-2 glass-card rounded-xl text-xs text-purple-500 font-bold hover:bg-purple-500/10 transition-all">Manage</Link>
           </div>
           
-          <div className="space-y-6 sm:space-y-8">
-            <div className="flex items-center justify-between p-4 sm:p-6 bg-white/5 rounded-[20px] sm:rounded-[24px]">
-              <div>
-                <p className="text-[10px] sm:text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Active Staff</p>
-                <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mt-1">{activeStaffCount}</p>
+          <div className="space-y-10">
+            <div className="flex items-center justify-between p-6 bg-gradient-to-br from-purple-600/10 to-transparent rounded-[28px] border border-purple-500/10 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 blur-3xl rounded-full -mr-16 -mt-16 group-hover:bg-purple-500/20 transition-colors" />
+              <div className="relative z-10">
+                <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em]">Active Staff</p>
+                <p className="text-4xl font-black text-slate-900 dark:text-white mt-1 tracking-tighter">{activeStaffCount}</p>
               </div>
-              <div className="w-12 h-12 sm:w-16 sm:h-16 gradient-bg rounded-xl sm:rounded-2xl flex items-center justify-center text-white purple-glow">
-                <Users className="w-6 h-6 sm:w-8 sm:h-8" />
+              <div className="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center text-white purple-glow relative z-10 group-hover:scale-110 transition-transform duration-500">
+                <Users className="w-8 h-8" />
               </div>
             </div>
             
-            <div className="space-y-4">
+            <div className="space-y-5">
               <div className="flex justify-between items-end">
-                <p className="text-[10px] sm:text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Attendance Today</p>
-                <p className="text-xs sm:text-sm font-bold text-white">
+                <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em]">Attendance Today</p>
+                <p className="text-sm font-black text-purple-500 tracking-tight">
                   {Math.round(((presentCount + halfDayCount) / Math.max(activeStaffCount, 1)) * 100)}%
                 </p>
               </div>
-              <div className="relative h-3 sm:h-4 bg-white/5 rounded-full overflow-hidden flex">
+              <div className="relative h-4 bg-white/5 rounded-full overflow-hidden flex p-1">
                 <motion.div 
                   initial={{ width: 0 }}
                   animate={{ width: `${(presentCount / Math.max(activeStaffCount, 1)) * 100}%` }}
-                  className="h-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"
+                  className="h-full bg-emerald-500 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.3)]"
                 />
                 <motion.div 
                   initial={{ width: 0 }}
                   animate={{ width: `${(halfDayCount / Math.max(activeStaffCount, 1)) * 100}%` }}
-                  className="h-full bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]"
+                  className="h-full bg-amber-500 rounded-full shadow-[0_0_15px_rgba(245,158,11,0.3)] ml-1"
                 />
               </div>
-              <div className="flex flex-wrap justify-between gap-y-2 text-[9px] sm:text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                <div className="flex gap-3 sm:gap-4">
-                  <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-500" /> {presentCount} Present</span>
-                  <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-amber-500" /> {halfDayCount} Half Day</span>
+              <div className="flex flex-wrap justify-between gap-y-3 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
+                <div className="flex gap-4">
+                  <span className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" /> {presentCount} Present</span>
+                  <span className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]" /> {halfDayCount} Half Day</span>
                 </div>
-                <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-rose-500" /> {activeStaffCount - (presentCount + halfDayCount)} Absent</span>
+                <span className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.5)]" /> {activeStaffCount - (presentCount + halfDayCount)} Absent</span>
               </div>
             </div>
 
-            <div className="pt-6 border-t border-white/5">
-              <div className="flex items-center justify-between text-xs sm:text-sm">
-                <span className="text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Yearly Sales Target</span>
-                <span className="font-bold text-slate-900 dark:text-white">₹{totalYear.toLocaleString()} / ₹1Cr</span>
+            <div className="pt-8 border-t border-white/5">
+              <div className="flex items-center justify-between text-xs mb-4">
+                <span className="text-slate-500 dark:text-slate-400 font-bold uppercase tracking-[0.2em]">Yearly Sales Target</span>
+                <span className="font-black text-slate-900 dark:text-white tracking-tight">₹{totalYear.toLocaleString()} <span className="text-slate-500 font-bold">/ ₹1Cr</span></span>
               </div>
-              <div className="mt-3 h-2 bg-white/5 rounded-full overflow-hidden">
+              <div className="h-3 bg-white/5 rounded-full overflow-hidden p-0.5">
                 <motion.div 
                   initial={{ width: 0 }}
                   animate={{ width: `${(totalYear / 10000000) * 100}%` }}
-                  className="h-full gradient-bg purple-glow"
+                  className="h-full gradient-bg rounded-full shadow-[0_0_20px_rgba(147,51,234,0.3)]"
                 />
               </div>
             </div>
