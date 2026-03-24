@@ -190,8 +190,16 @@ export default function StaffManagement() {
                 </button>
               </div>
             </div>
-            <div>
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white">{s.name}</h3>
+            <div className="space-y-1">
+              <div className="flex items-center gap-3 flex-wrap">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white">{s.name}</h3>
+                <button 
+                  onClick={() => handleViewProfile(s)}
+                  className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-500 border border-purple-500/20 hover:bg-purple-500/20 transition-all"
+                >
+                  View Profile
+                </button>
+              </div>
               <p className="text-sm text-slate-500 dark:text-slate-400 font-medium opacity-60">{s.role}</p>
               <div className="mt-6 flex items-center justify-between p-4 bg-white/5 rounded-2xl">
                 <div>
