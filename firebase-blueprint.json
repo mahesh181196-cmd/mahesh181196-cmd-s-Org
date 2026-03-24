@@ -1,0 +1,72 @@
+{
+  "entities": {
+    "Staff": {
+      "title": "Staff",
+      "description": "Information about company employees",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Full name of the staff member" },
+        "role": { "type": "string", "description": "Job title or role" },
+        "monthlySalary": { "type": "number", "description": "Fixed monthly salary amount" },
+        "active": { "type": "boolean", "description": "Whether the staff is currently employed" }
+      },
+      "required": ["name", "role", "monthlySalary", "active"]
+    },
+    "Attendance": {
+      "title": "Attendance",
+      "description": "Daily attendance records for staff",
+      "type": "object",
+      "properties": {
+        "date": { "type": "string", "format": "date", "description": "ISO date string (YYYY-MM-DD)" },
+        "staffId": { "type": "string", "description": "Reference to Staff document ID" },
+        "status": { "type": "string", "enum": ["present", "absent", "half-day", "holiday"], "description": "Attendance status" }
+      },
+      "required": ["date", "staffId", "status"]
+    },
+    "Sale": {
+      "title": "Sale",
+      "description": "Record of a stone or tile sale",
+      "type": "object",
+      "properties": {
+        "date": { "type": "string", "format": "date", "description": "ISO date string (YYYY-MM-DD)" },
+        "salesmanId": { "type": "string", "description": "Optional reference to Staff ID (if salesman-based)" },
+        "customerName": { "type": "string", "description": "Name of the customer" },
+        "product": { "type": "string", "description": "Product sold (Stone/Tiles)" },
+        "quantity": { "type": "number", "description": "Quantity sold" },
+        "amount": { "type": "number", "description": "Total sale amount" },
+        "paymentStatus": { "type": "string", "enum": ["paid", "pending"], "description": "Payment status" }
+      },
+      "required": ["date", "customerName", "product", "quantity", "amount", "paymentStatus"]
+    },
+    "Expense": {
+      "title": "Expense",
+      "description": "Company expenses and staff advances",
+      "type": "object",
+      "properties": {
+        "date": { "type": "string", "format": "date", "description": "ISO date string (YYYY-MM-DD)" },
+        "type": { "type": "string", "enum": ["advance", "transport", "other"], "description": "Type of expense" },
+        "amount": { "type": "number", "description": "Expense amount" },
+        "staffId": { "type": "string", "description": "Optional reference to Staff ID (for advances)" },
+        "description": { "type": "string", "description": "Details about the expense" }
+      },
+      "required": ["date", "type", "amount", "description"]
+    },
+    "User": {
+      "title": "User",
+      "description": "Admin users for the application",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "format": "email", "description": "User email address" },
+        "role": { "type": "string", "enum": ["admin"], "description": "User role" }
+      },
+      "required": ["email", "role"]
+    }
+  },
+  "firestore": {
+    "/staff/{staffId}": { "schema": "Staff", "description": "Staff members" },
+    "/attendance/{attendanceId}": { "schema": "Attendance", "description": "Daily attendance logs" },
+    "/sales/{saleId}": { "schema": "Sale", "description": "Sales records" },
+    "/expenses/{expenseId}": { "schema": "Expense", "description": "Expenses and advances" },
+    "/users/{userId}": { "schema": "User", "description": "Admin users" }
+  }
+}
