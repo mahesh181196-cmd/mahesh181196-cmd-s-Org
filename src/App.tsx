@@ -335,8 +335,8 @@ export default function App() {
   }, [isDarkMode]);
 
   useEffect(() => {
-    // Check for demo user in session storage
-    const savedDemoUser = sessionStorage.getItem('demoUser');
+    // Check for demo user in local storage
+    const savedDemoUser = localStorage.getItem('demoUser');
     if (savedDemoUser) {
       setUser(JSON.parse(savedDemoUser));
     }
@@ -345,12 +345,12 @@ export default function App() {
 
   const handleDemoLogin = (demoUser: DemoUser) => {
     setUser(demoUser);
-    sessionStorage.setItem('demoUser', JSON.stringify(demoUser));
+    localStorage.setItem('demoUser', JSON.stringify(demoUser));
   };
 
   const handleLogout = async () => {
     setUser(null);
-    sessionStorage.removeItem('demoUser');
+    localStorage.removeItem('demoUser');
     toast.success('Logged out successfully');
   };
 
